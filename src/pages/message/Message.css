@@ -1,0 +1,22 @@
+/* .home-page-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.top-photogram-logo {
+    display: none;
+} */
+
+.messenger {
+    height: calc(100vh - 70px);
+    display: flex;
+}
+
+.chatBox{
+    flex: 5.5;
+}
+
+.chatMenu{
+    flex: 3px;
+}

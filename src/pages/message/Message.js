@@ -1,0 +1,46 @@
+// import React, { useContext, useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import firebaseContex from "../../context/FirebaseContex";
+// import RightNavbar from "../../components/rightNavbar/RightNavbar";
+import ImageUpload from "../../components/imageUpload/ImageUpload";
+import Navbar from "../../components/navbar/Navbar";
+import SearchBox from "../../components/searchBox/SearchBox";
+import "./Message.css";
+
+export default function Message() {
+
+    // const Home = () => {
+    //     const { posts, allUsers, loading, postLimit, setPostLimit, postCount } =
+    //       useContext(firebaseContex);
+    //     const navigate = useNavigate();
+    //     const [alertMessage, setAlertMessage] = useState("");
+      
+    //     const localUser = JSON.parse(localStorage.getItem("authUser"));
+    //     useEffect(() => {
+    //       if (localUser === null) {
+    //         navigate("/login");
+    //       }
+    //     }, [localUser]);
+      
+    //     const currentUserInfo = allUsers.filter((val) => {
+    //       return localUser?.uid === val.id;
+    //     });
+    // }
+
+    return (
+        <>
+        <div className="explore-page-container">
+            <div className="top-photogram-logo">
+                <div className="photogram-logo">Okv Photogram</div>
+            </div>
+            <Navbar />
+            <ImageUpload />
+            <SearchBox />
+            {/* <RightNavbar currentUserInfo={currentUserInfo} />  */}
+        </div>
+        <div className="">
+
+        </div>
+        </>
+    )
+}

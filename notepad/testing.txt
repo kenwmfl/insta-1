@@ -1,0 +1,99 @@
+// import React, { useContext, useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import RightNavbar from "../../components/rightNavbar/RightNavbar";
+import React, { useState, useEffect } from "react";
+import { getAuth } from 'firebase/auth'
+import { getFirestore } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  where,
+  serverTimestamp,
+  onSnapshot,
+  query,
+  orderBy,
+} from "firebase/firestore";
+import ImageUpload from "../../components/imageUpload/ImageUpload";
+import Navbar from "../../components/navbar/Navbar";
+import SearchBox from "../../components/searchBox/SearchBox";
+import "./Message.css";
+
+
+export default function Message() {
+
+    return (
+        <div className="explore-page-container">
+            <div className="top-photogram-logo">
+                <div className="photogram-logo">Okv Photogram</div>
+            </div>
+            <Navbar />
+            <ImageUpload />
+            <SearchBox />
+            {/* <RightNavbar currentUserInfo={currentUserInfo} /> */} 
+             
+        </div>
+    )
+    
+
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState("");
+    const messagesRef = collection(getFirestore, "messages");
+  
+    useEffect(() => {
+      const queryMessages = query(
+        messagesRef,
+        orderBy("createdAt")
+      );
+      const unsuscribe = onSnapshot(queryMessages, (snapshot) => {
+        let messages = [];
+        snapshot.forEach((doc) => {
+          messages.push({ ...doc.data(), id: doc.id });
+        });
+        console.log(messages);
+        setMessages(messages);
+      });
+  
+      return () => unsuscribe();
+    }, []);
+  
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+  
+      if (newMessage === "") return;
+      await addDoc(messagesRef, {
+        text: newMessage,
+        createdAt: serverTimestamp(),
+        user: getAuth.currentUser.displayName,
+      });
+  
+      setNewMessage("");
+    };
+  
+    return (
+        
+      <div className="chat-app">
+        <div className="header">
+          <h1>Welcome to: Messenger</h1>
+        </div>
+        <div className="messages">
+          {messages.map((message) => (
+            <div key={message.id} className="message1">
+              <span className="user">{message.user}:</span> {message.text}
+            </div>
+          ))}
+        </div>
+        <form onSubmit={handleSubmit} className="new-message-form">
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(event) => setNewMessage(event.target.value)}
+            className="new-message-input"
+            placeholder="Type your message here..."
+          />
+          <button type="submit" className="send-button">
+            Send
+          </button>
+        </form>
+      </div>
+    );
+  };
